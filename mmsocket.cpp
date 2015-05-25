@@ -6,8 +6,6 @@ CSocket::CSocket()
 {
 	socket_fd = -1;
 	bis_noblock = false;
-	bis_error = false;
-	bis_completed = false;
 
 	input_buffer = new vector<char>;
 	output_buffer = new vector<char>;
@@ -19,7 +17,9 @@ CSocket::CSocket()
 
 CSocket::~CSocket()
 {
-
+	delete input_buffer;
+	delete output_buffer;
+	delete recv_buffer;
 }
 
 void CSocket::set_noblock(bool enable)
@@ -177,8 +177,12 @@ int CSocket::recv()
 	while(input_pos < buffer->size())
 	{
 		int len  = ::read(socket_fd, &(buffer->at(input_pos)), buffer->size()-input_pos);
+		//printf("[DEBUG]read len = %d\n", len);
+		//printf("[DEBUG]read buffer size = %d\n", buffer->size());
+		//printf("[DEBUG]read input_pos = %d\n", input_pos);
 		if (-1 == len)
 		{
+			printf("[DEBUG]recv errno = %d\n",errno);
 			if(errno == EINTR)
 			{
 				continue;
@@ -189,7 +193,6 @@ int CSocket::recv()
 			}
 			else
 			{
-				printf("[DEBUG]recv errno = %d\n",errno);
 				return -1;
 			}
 		}
@@ -218,8 +221,12 @@ int CSocket::send()
 	while(output_pos < output_buffer->size())
 	{
 		int len = ::write(socket_fd, &buffer->at(output_pos), buffer->size()-output_pos);
+		//printf("[DEBUG]write len = %d\n", len);
+		//printf("[DEBUG]write buffer size = %d\n", buffer->size());
+		//printf("[DEBUG]write output_pos = %d\n", output_pos);
 		if (-1 == len)
 		{
+			printf("[DEBUG]send errno = %d\n",errno);
 			if (errno == EINTR)
 			{
 				continue;
@@ -230,7 +237,6 @@ int CSocket::send()
 			}
 			else
 			{
-				printf("[DEBUG]\n");
 				return -1;
 			}
 		}
@@ -277,7 +283,8 @@ vector<char> *CSocket::check()
 	char *body = (char *)memchr(head, '\0', size);
 	if (NULL == body)
 	{
-		return NULL;
+		recv_buffer->clear();
+		return recv_buffer;
 	}
 
 	body++;

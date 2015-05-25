@@ -11,6 +11,8 @@
 #include <memory>
 #include <vector>
 #include <map>
+#include <string>
+#include <sstream>
 
 #include "main.h"
 #include "netio.h"
@@ -47,33 +49,17 @@ public:
 
 
 	int start();
-	//int stop();
 
 private:
-//	int init_socket();
-//	int wait_socket();
-//	int close_socket();
-//
-//	int dispatch(PACKET packet);
 	CSocket *accept_socket();
 
 	int parse_packet(vector<string> *packet_data, vector<char> *recv_data);
 	int proc_command(vector<string> &packet_data, string &output);
 
 private:
-	int m_server_socket_fd;
-	int m_connect_socket_fd;
-
-	struct sockaddr_in m_server_addr;
-	struct sockaddr_in m_remote_addr;
-
-	char *m_pBuffer;
-
-private:
 
 	static CServer *m_pInstance;
 	st_ready_list ready_list;
-	st_ready_list ready_list2;
 
 	CNetIO *netio;
 	CSocket *server_socket;
@@ -81,8 +67,6 @@ private:
 	map<string, string> cache;
 
 };
-
-
 
 
 #endif /* SERVER_H_ */

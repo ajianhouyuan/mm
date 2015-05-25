@@ -47,24 +47,10 @@ public:
 		return socket_fd;
 	}
 
-	int is_error()
-	{
-		return bis_error;
-	}
-
-	void mark_error()
-	{
-		bis_error = true;
-	}
-
-
 private:
 
 	int socket_fd;
 	bool bis_noblock;
-	bool bis_error;
-
-	bool bis_completed;
 
 	vector<char> *recv_buffer;
 };
