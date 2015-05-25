@@ -19,6 +19,11 @@ CServer *CServer::get_instance()
 		CServer::m_pInstance = new CServer();
 		printf("[DEBUG]*CServer::get_instance() New CServer\n");
 		CServer::m_pInstance->server_socket = CSocket::listen("0.0.0.0",1234);
+		if (NULL == CServer::m_pInstance->server_socket)
+		{
+			printf("[DEBUG]server_socket == NULL exit!\n");
+			exit(1);
+		}
 		printf("[DEBUG]CSocket::listen('0.0.0.0',1234)\n");
 	}
 	return CServer::m_pInstance;
