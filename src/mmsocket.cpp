@@ -56,35 +56,35 @@ void CSocket::set_keepalive(bool enable)
 	}
 }
 
-CSocket *CSocket::connect(char *ip, int port)
-{
-	int sock_fd = -1;
-	struct sockaddr_in addr;
-	memset(&addr, 0, sizeof(addr));
-	addr.sin_family = AF_INET;
-	addr.sin_port = htons((short)port);
-	inet_pton(AF_INET, ip, &addr.sin_addr);
-
-	CSocket *csocket = new CSocket();
-
-	if((sock_fd = ::socket(AF_INET, SOCK_STREAM, 0)) == -1)
-	{
-		goto err;
-	}
-
-	if (::connect(sock_fd, (struct sockaddr *)&addr, sizeof(addr)) == -1)
-	{
-		goto err;
-	}
-
-	csocket->socket_fd = sock_fd;
-	csocket->set_keepalive(true);
-	return csocket;
-
-err:
-	close(sock_fd);
-	return NULL;
-}
+//CSocket *CSocket::connect(char *ip, int port)
+//{
+//	int sock_fd = -1;
+//	struct sockaddr_in addr;
+//	memset(&addr, 0, sizeof(addr));
+//	addr.sin_family = AF_INET;
+//	addr.sin_port = htons((short)port);
+//	inet_pton(AF_INET, ip, &addr.sin_addr);
+//
+//	CSocket *csocket = new CSocket();
+//
+//	if((sock_fd = ::socket(AF_INET, SOCK_STREAM, 0)) == -1)
+//	{
+//		goto err;
+//	}
+//
+//	if (::connect(sock_fd, (struct sockaddr *)&addr, sizeof(addr)) == -1)
+//	{
+//		goto err;
+//	}
+//
+//	csocket->socket_fd = sock_fd;
+//	csocket->set_keepalive(true);
+//	return csocket;
+//
+//err:
+//	close(sock_fd);
+//	return NULL;
+//}
 
 CSocket *CSocket::listen(char *ip, int port)
 {

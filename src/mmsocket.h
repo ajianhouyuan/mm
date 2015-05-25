@@ -27,7 +27,7 @@ public:
 	void set_nodelay(bool enable = true);
 	void set_keepalive(bool enable = true);
 
-	static CSocket *connect(char *ip, int port);
+	//static CSocket *connect(char *ip, int port);
 	static CSocket *listen(char *ip, int port);
 	CSocket *accept();
 
